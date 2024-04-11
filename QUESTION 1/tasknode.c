@@ -68,3 +68,52 @@ bool Load(PLISTNODE* task,const char* filename) {
 	return true;
 
 }
+
+
+// Function to add a new task to the list
+void AddTask(PLISTNODE* task, TASK t) {
+	PLISTNODE newNode = (PLISTNODE)malloc(sizeof(TASKNODE));
+	if (newNode == NULL) {
+		printf("Memory allocation failed\n");
+		return;
+	}
+	newNode->tasks = t;
+	newNode->next = NULL;
+
+	if (*task == NULL) {
+		*task = newNode;
+	}
+	else {
+		PLISTNODE current = *task;
+		while (current->next != NULL) {
+			current = current->next;
+		}
+		current->next = newNode;
+	}
+}
+
+// Function to delete a task from the list by ID
+void DeleteTask(PLISTNODE* task, int id) {
+	PLISTNODE current = *task;
+	PLISTNODE prev = NULL;
+
+	while (current != NULL && current->tasks.id != id) {
+		prev = current;
+		current = current->next;
+	}
+
+	if (current == NULL) {
+		printf("Task with ID %d not found\n", id);
+		return;
+	}
+
+	if (prev == NULL) {
+		*task = current->next;
+	}
+	else {
+		prev->next = current->next;
+	}
+
+	free(current);
+	printf("Task with ID %d deleted\n", id);
+}

@@ -20,3 +20,9 @@ void Update(PLISTNODE* task, TASK t);
 bool Save(PLISTNODE task, const char* filename);
 
 bool Load(PLISTNODE* task,const char* filename);
+//Devaughn C 
+//Group Project To-do list
+void DisplayMenu(void);
+void AddTask(PLISTNODE* task, TASK t);
+void DeleteTask(PLISTNODE* task, int id);
+
