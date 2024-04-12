@@ -17,7 +17,7 @@ void DisplayMenu() {
 	//prints the menu
 	printf("\n--- To-Do List Menu ---\n");
 	printf("1) add a new task\n");
-	printf("2) delete an existing task\n ");
+	printf("2) delete an existing task\n");
 	printf("3) update an existing task\n");
 	printf("4) display a single task\n");
 	printf("5) display range of tasks\n");
