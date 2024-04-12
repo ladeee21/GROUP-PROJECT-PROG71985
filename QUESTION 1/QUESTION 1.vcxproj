@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="menu.c" />
     <ClCompile Include="Source.c" />
     <ClCompile Include="tasknode.c" />
     <ClCompile Include="to do list.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="menu.h" />
     <ClInclude Include="tasknode.h" />
     <ClInclude Include="to do list.h" />
   </ItemGroup>

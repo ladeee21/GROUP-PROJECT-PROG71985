@@ -1,37 +1,72 @@
+//prog71985-winter24
+//GROUP PROJECT-TODO LIST
+//WEEK 14- 02/04/2024
+
+//Group members: Devaughn Channer, Aderibigbe Omoshalewa, and Fatah Ahmed
+
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
+#include <string.h>
 #include "tasknode.h"
+#include "menu.h"
 
-//Menu Function
-void DisplayMenu() {
-	printf("\n--- To-Do List Menu ---\n");
-	printf("1. Add a new task\n");
-	printf("2. Delete a task\n");
-	printf("3. Display all tasks\n");
-	printf("4. Save tasks to file\n");
-	printf("5. Load tasks from file\n");
-	printf("6. Exit\n");
-	printf("Enter your choice: ");
-}
-
-int main() {
+int main(void) {
+	//initializes the node
 	PLISTNODE tasknode = NULL;
+	int option;
 
-	bool loadSuccess = Load(&tasknode,"task.dat.txt");
+	//loads task from tisk
+	bool loadSuccess = LoadTask(&tasknode, "task.dat.txt");
 	if (!loadSuccess) {
 		printf("failure in loading tasks from file\n");
 		return 1;
 	}
 
-	printf("Tasks loaded from file: \n");
+	do {
+		//displays menu
+		DisplayMenu();
 
+		//reads user choice
+		option = GetUserChoice();
 
-	 Display(tasknode);
+		switch (option) {
+		case 1:
+			AddTaskToList(&tasknode);
 
-	
+			//clears input buffer
+			while (getchar() != '\n');
 
-	Save(tasknode,"task.dat.txt");
+			break;
+		case 2:
+			DeleteTaskFromList(&tasknode);
+			break;
+		case 3:
+			UpdateTask(tasknode);
+			break;
+		case 4:
+			DisplaySingleTask(tasknode);
+			break;
+		case 5:
+			DisplayRangeOfTask(tasknode);
+			break;
+		case 6:
+			DisplayAllTask(tasknode);
+			break;
+		case 7:
+			SearchForTask(tasknode);
+			break;
+		case 8:
+			SaveTask(tasknode, "task.dat.txt");
+			printf("exiting to-do list....Goodbye\n");
+			break;
+		default:
+			printf("Invalid option. Try again\n");
+			break;
 
-	
+		}
+
+	} while (option != 8);
 
 	return 0;
 }

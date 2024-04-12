@@ -1,10 +1,207 @@
+//prog71985-winter24
+//GROUP PROJECT-TODO LIST
+//WEEK 14- 02/04/2024
+
+//Group members: Devaughn Channer, Aderibigbe Omoshalewa, and Fatah Ahmed
+
+
+//Tasknode implementation
+
 #define _CRT_SECURE_NO_WARNINGS
 #include "tasknode.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-void Display(PLISTNODE task) {
+void AddTask(PLISTNODE* task, TASK t) {
+	PLISTNODE newnode = (PLISTNODE)malloc(sizeof(TASKNODE));
+
+	if (newnode == NULL) {
+		fprintf(stderr, "error allocating memory\n");
+		return;
+	}
+	//copy task into the node
+	newnode->tasks = t;
+
+	newnode->next = NULL;
+
+	//if the list is empty, sets the newnode as head
+	if (*task == NULL) {
+		*task = newnode;
+	}
+	else {
+		//finds the last node and append the newnode
+		PLISTNODE current = *task;
+		while (current->next != NULL) {
+			current = current->next;
+		}
+		current->next = newnode;
+	}
+	printf("Task with id %d added successfuly\n", t.id);
+}
+
+void AddTaskToList(PLISTNODE* tasklist) {
+
+
+	TASK newtask;
+
+	//prompt user to enter name of task/their names
+	printf("Enter your name/name of task:");
+	scanf_s("%[^\n]%*c", newtask.person, sizeof(newtask.person));
+
+	//prompt user to enter description of task
+	printf("Enter description of task:");
+	scanf_s("%[^\n]%*c", newtask.description, sizeof(newtask.description));
+
+	//prompt user to enter Id of task
+	printf("Enter task id:");
+	scanf_s("%d", &newtask.id, sizeof(newtask.id));
+
+	//call the add function to add the task to the list
+
+	AddTask(tasklist, newtask);
+
+}
+
+void DeleteTask(PLISTNODE* task, int id) {
+	PLISTNODE current = *task;
+	PLISTNODE prev = NULL;
+	//traverse through the list to find task to delete
+	while (current != NULL && current->tasks.id != id) {
+		prev = current;
+		current = current->next;
+	}
+	//if task not found
+	if (current == NULL) {
+		printf("Task with ID %d not found.", id);
+		return;
+	}
+
+	//if task to delete is the first node
+	if (prev == NULL) {
+		*task = current->next;
+	}
+	else {
+		prev->next = current->next;
+	}
+
+	//free the memory allocation for the deleted node
+	free(current);
+	printf("Task with ID %d deleted successfully.", id);
+}
+
+void DeleteTaskFromList(PLISTNODE* tasklist) {
+	int taskIdToDelete;
+	char input[MAXSIZE];
+
+	//prompt user to enter the Id of the task to delete
+
+	printf("Enter Id of the task you want to delete:");
+	fgets(input, sizeof(input), stdin);
+	sscanf_s(input, "%d", &taskIdToDelete);
+
+	//call the delete function to remove the task from the list
+	DeleteTask(tasklist, taskIdToDelete);
+}
+
+void UpdateTask(PLISTNODE task) {
+	int taskIdToUpdate = 0;
+	char input[MAXSIZE];
+
+	//prompt user to enter the id of the task to update
+	printf("Enter id of the task to update:");
+	fgets(input, sizeof(input), stdin);
+	sscanf_s(input, "%d", &taskIdToUpdate);
+
 	PLISTNODE current = task;
+
+	//traverse through the list to find the task with the specified id
+	while (current != NULL && current->tasks.id != taskIdToUpdate) {
+		current = current->next;
+	}
+
+	//if task is not found
+	if (current == NULL) {
+		printf("Task with Id %d  not found.\n", taskIdToUpdate);
+		return;
+
+	}
+
+	//prompt user to enter the new name 
+
+	printf("Enter the new name for the task:");
+	scanf_s("%[^\n]%*c", current->tasks.person, sizeof(current->tasks.person));
+
+	//prompt user to enter new description
+	printf("Enter the new description for the task:");
+	scanf_s("%[^\n]%*c", current->tasks.description, sizeof(current->tasks.description));
+
+	printf("Task with Id %d updated successfully\n", taskIdToUpdate);
+}
+
+void DisplaySingleTask(PLISTNODE task) {
+	int TaskIdToDisplay = 0;
+	char input[MAXSIZE];
+
+	//prompt user to enter the id of the task to update
+	printf("Enter id of the task to display:");
+	fgets(input, sizeof(input), stdin);
+	sscanf_s(input, "%d", &TaskIdToDisplay);
+
+	PLISTNODE current = task;
+
+	//Traverse the list to find the task with the specified Id 
+	while (current != NULL && current->tasks.id != TaskIdToDisplay) {
+		current = current->next;
+	}
+	//if task is not found
+	if (current == NULL) {
+		printf("Task with Id %d not found\n", TaskIdToDisplay);
+		return;
+	}
+
+	//display the task
+	PrintTask(current->tasks);
+}
+
+void DisplayRangeOfTask(PLISTNODE task) {
+	int startId = 0, endId = 0;
+	char input[MAXSIZE];
+	bool found = false;
+
+	//Prompt the user for the starting id
+	printf("Enter the starting id of the range of tasks:");
+	fgets(input, sizeof(input), stdin);
+	sscanf_s(input, "%d", &startId);
+
+	//prompt the user for the ending id
+	printf("Enter the ending id of the range of tasks:");
+	fgets(input, sizeof(input), stdin);
+	sscanf_s(input, "%d", &endId);
+
+	PLISTNODE current = task;
+
+	//traverse through the list to find the tasks within the specified range of IDs
+	while (current != NULL) {
+		if (current->tasks.id >= startId && current->tasks.id <= endId) {
+			//display the tasks
+			printf("\nTask details\n");
+			PrintTask(current->tasks);
+			found = true;
+		}
+		current = current->next;
+	}
+	//if not tasks were found within the specified range
+	if (!found) {
+		printf("No tasks were found within the specified range.");
+	}
+
+}
+
+void DisplayAllTask(PLISTNODE task) {
+	PLISTNODE current = task;
+
+	//traverse through the list to display all tasks
 
 	while (current != NULL) {
 		PrintTask(current->tasks);
@@ -13,20 +210,39 @@ void Display(PLISTNODE task) {
 	}
 }
 
-void Update(PLISTNODE* task, TASK t) {
-	PLISTNODE current = *task;
+
+bool SearchForTask(PLISTNODE task) {
+	int taskIdToSearch;
+	char input[MAXSIZE];
+
+	//prompt the user to enter the id of the task to search for
+	printf("Enter the id of the task to search for:");
+	fgets(input, sizeof(input), stdin);
+	sscanf_s(input, "%d", &taskIdToSearch);
+
+	TASK taskToSearch;
+	taskToSearch.id = taskIdToSearch;
+
+	PLISTNODE current = task;
+
+	//traverse through the list to find the task with the specified id
+
 	while (current != NULL) {
-		if (current->tasks.id == t.id) {
-			strncpy_s(current->tasks.person, MAXNAME, t.person, MAXNAME);
-			strncpy_s(current->tasks.description, MAXSIZE, t.description, MAXSIZE);
+		if (CompareTasks(current->tasks, taskToSearch)) {
+
+			//task found, print the task
+			PrintTask(current->tasks);
 			return;
 		}
 		current = current->next;
 	}
-	printf("Task with ID %d not found\n", t.id);
+	//task not found
+	printf("Task with Id %d not found.\n", taskIdToSearch);
+
 }
 
-bool Save(PLISTNODE task, const char* filename) {
+
+bool SaveTask(PLISTNODE task, const char* filename) {
 	//open the file for writing
 	FILE* fp = fopen(filename, "w");
 	if (fp == NULL) {
@@ -35,6 +251,8 @@ bool Save(PLISTNODE task, const char* filename) {
 
 	}
 	PLISTNODE current = task;
+
+	//traverse through the list and saves tasks to disk
 	while (current != NULL) {
 
 		SaveTaskToDisk(current->tasks, fp);
@@ -44,76 +262,26 @@ bool Save(PLISTNODE task, const char* filename) {
 	return true;
 }
 
-bool Load(PLISTNODE* task,const char* filename) {
+bool LoadTask(PLISTNODE* task, const char* filename) {
 	//open the file for reading
 	FILE* fp = fopen(filename, "r");
 	if (fp == NULL) {
-		fprintf(stderr, "unable to open file for reading: %s\n",filename);
+		fprintf(stderr, "unable to open file for reading: %s\n", filename);
 		return false;
 
 	}
 
-
+	//checks if it is not the end of the file
 	while (!feof(fp)) {
-		TASK loadedTask= LoadTaskFromDisk(fp);
-		if (&loadedTask == NULL) {
-			fprintf(stderr, "Error loading taskk from disk\n");
-			fclose(fp);
-			return false;
-		}
+		TASK loadedTask = LoadTaskFromDisk(fp);
+
+		//read task data from file
+		 	AddTask(task, loadedTask);
+	
+		
 	}
-	
-	
+
+
 	fclose(fp);
 	return true;
-
-}
-
-
-// Function to add a new task to the list
-void AddTask(PLISTNODE* task, TASK t) {
-	PLISTNODE newNode = (PLISTNODE)malloc(sizeof(TASKNODE));
-	if (newNode == NULL) {
-		printf("Memory allocation failed\n");
-		return;
-	}
-	newNode->tasks = t;
-	newNode->next = NULL;
-
-	if (*task == NULL) {
-		*task = newNode;
-	}
-	else {
-		PLISTNODE current = *task;
-		while (current->next != NULL) {
-			current = current->next;
-		}
-		current->next = newNode;
-	}
-}
-
-// Function to delete a task from the list by ID
-void DeleteTask(PLISTNODE* task, int id) {
-	PLISTNODE current = *task;
-	PLISTNODE prev = NULL;
-
-	while (current != NULL && current->tasks.id != id) {
-		prev = current;
-		current = current->next;
-	}
-
-	if (current == NULL) {
-		printf("Task with ID %d not found\n", id);
-		return;
-	}
-
-	if (prev == NULL) {
-		*task = current->next;
-	}
-	else {
-		prev->next = current->next;
-	}
-
-	free(current);
-	printf("Task with ID %d deleted\n", id);
 }

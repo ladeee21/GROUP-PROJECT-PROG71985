@@ -1,9 +1,18 @@
+//prog71985-winter24
+//GROUP PROJECT-TODO LIST
+//WEEK 14- 02/04/2024
+
+//Group members: Devaughn Channer, Aderibigbe Omoshalewa, and Fatah Ahmed
+
+// TO-DO LIST IMPLEMENATATION
+
+
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "to do list.h"
 #include <stdlib.h>
 #include <string.h>
 
-
-#define _CRT_SECURE_NO_WARNINGS
 
 TASK CreateTask(char* person, char* description, int id) {
 	TASK t;
@@ -19,7 +28,15 @@ TASK CreateTask(char* person, char* description, int id) {
 }
 
 void PrintTask(TASK t) {
-	printf("TASK:%s,%s,%d", t.person, t.description, t.id);
+	printf("TASK %d:", t.id);
+	printf("% s,", t.person);
+	printf("%s\n", t.description);
+
+
+}
+
+bool CompareTasks(TASK lhs, TASK rhs) {
+	return (lhs.id == rhs.id);
 }
 
 
@@ -29,11 +46,9 @@ void SaveTaskToDisk(TASK t, FILE* fp) {
 	fprintf(fp, "%s\n", t.person);
 	fprintf(fp, "%s\n", t.description);
 	fprintf(fp, "%d\n", t.id);
-
 }
 
-TASK LoadTaskFromDisk(FILE* fp) {
-
+TASK  LoadTaskFromDisk(FILE* fp) {
 	TASK loadedTask;
 	char descriptionbuffer[MAXSIZE] = { 0 };
 	fgets(descriptionbuffer, MAXSIZE, fp);
@@ -44,9 +59,7 @@ TASK LoadTaskFromDisk(FILE* fp) {
 	int task_id;
 	fscanf_s(fp, "%d\n", &task_id);
 
-	 loadedTask= CreateTask(personbuffer, descriptionbuffer, task_id);
+	loadedTask = CreateTask(personbuffer, descriptionbuffer, task_id);
 
 	return loadedTask;
-
-
 }
