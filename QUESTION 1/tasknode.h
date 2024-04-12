@@ -16,6 +16,9 @@ typedef struct tasknode {
 
 //Devaughn C 
 //Group Project To-do list
+
+bool Initializetasks();
+
 void AddTask(PLISTNODE* task, TASK t);
 
 void DeleteTask(PLISTNODE* task, int id);

@@ -6,11 +6,12 @@
 
 //User Interface implementation
 
-
+//Main member In Charge: Devaughn Channer
 
 #include "menu.h"
 #include "tasknode.h"
 #include <stdio.h>
+#include <string.h>
 
 
 void DisplayMenu() {

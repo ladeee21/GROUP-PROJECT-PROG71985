@@ -4,6 +4,10 @@
 
 //Group members: Devaughn Channer, Aderibigbe Omoshalewa, and Fatah Ahmed
 
+
+//Main member in Charge: Devaughn Channer
+
+
 //menu interface
 
 #pragma once
@@ -11,4 +15,6 @@
 void DisplayMenu();
 
 int GetUserChoice();
+
+
 

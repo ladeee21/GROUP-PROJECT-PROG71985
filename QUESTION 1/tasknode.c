@@ -13,6 +13,16 @@
 #include <string.h>
 #include <stdlib.h>
 
+bool Initializetasks() {
+	TASK newtask;
+	newtask.id = 0;
+
+	strcpy_s(newtask.person, MAXSIZE, "");
+	strcpy_s(newtask.description, MAXSIZE, "");
+
+	return true;
+}
+
 void AddTask(PLISTNODE* task, TASK t) {
 	PLISTNODE newnode = (PLISTNODE)malloc(sizeof(TASKNODE));
 
@@ -36,8 +46,10 @@ void AddTask(PLISTNODE* task, TASK t) {
 			current = current->next;
 		}
 		current->next = newnode;
+
+	 	printf("Task with id %d added successfuly\n", t.id);
 	}
-	printf("Task with id %d added successfuly\n", t.id);
+	
 }
 
 void AddTaskToList(PLISTNODE* tasklist) {
@@ -264,9 +276,9 @@ bool SaveTask(PLISTNODE task, const char* filename) {
 
 bool LoadTask(PLISTNODE* task, const char* filename) {
 	//open the file for reading
-	FILE* fp = fopen(filename, "r");
+ 	FILE* fp = fopen(filename, "r");
 	if (fp == NULL) {
-		fprintf(stderr, "unable to open file for reading: %s\n", filename);
+ 		fprintf(stderr, "unable to open file for reading: %s\n", filename);
 		return false;
 
 	}
@@ -276,11 +288,11 @@ bool LoadTask(PLISTNODE* task, const char* filename) {
 		TASK loadedTask = LoadTaskFromDisk(fp);
 
 		//read task data from file
-		 	AddTask(task, loadedTask);
-	
-		
-	}
+		fread(&loadedTask, sizeof(TASK), 1, fp);
+		AddTask(task, loadedTask);
 
+
+	}
 
 	fclose(fp);
 	return true;

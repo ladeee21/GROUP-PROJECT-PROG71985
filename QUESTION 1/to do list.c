@@ -28,11 +28,7 @@ TASK CreateTask(char* person, char* description, int id) {
 }
 
 void PrintTask(TASK t) {
-	printf("TASK %d:", t.id);
-	printf("% s,", t.person);
-	printf("%s\n", t.description);
-
-
+	printf("TASK %d: %s,%s\n", t.id,t.person,t.description);
 }
 
 bool CompareTasks(TASK lhs, TASK rhs) {
@@ -56,10 +52,11 @@ TASK  LoadTaskFromDisk(FILE* fp) {
 	char personbuffer[MAXNAME] = { 0 };
 	fgets(personbuffer, MAXNAME, fp);
 
+
+
 	int task_id;
-	fscanf_s(fp, "%d\n", &task_id);
+	fscanf_s(fp, "%d", &task_id);
 
 	loadedTask = CreateTask(personbuffer, descriptionbuffer, task_id);
-
 	return loadedTask;
 }
