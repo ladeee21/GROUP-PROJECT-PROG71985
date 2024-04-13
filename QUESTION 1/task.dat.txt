@@ -1,6 +1,2 @@
-TASK:Shal
-Going to swim
-1
-TASK:John
-Preparing for exams
-2
+TASK:Shal Going to swim 1
+TASK:John Answering calls 2

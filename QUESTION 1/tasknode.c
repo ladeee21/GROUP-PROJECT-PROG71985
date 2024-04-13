@@ -8,19 +8,17 @@
 //Tasknode implementation
 
 #define _CRT_SECURE_NO_WARNINGS
+
 #include "tasknode.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-bool Initializetasks() {
-	TASK newtask;
-	newtask.id = 0;
+void Initializetasks(PLISTNODE* tasklist) {
 
-	strcpy_s(newtask.person, MAXSIZE, "");
-	strcpy_s(newtask.description, MAXSIZE, "");
 
-	return true;
+ 	LoadTask(tasklist,"task.dat.txt");
+
 }
 
 void AddTask(PLISTNODE* task, TASK t) {
@@ -211,6 +209,10 @@ void DisplayRangeOfTask(PLISTNODE task) {
 }
 
 void DisplayAllTask(PLISTNODE task) {
+	if (task == NULL) {
+		printf("No tasks found in the list.\n");
+		return;
+	}
 	PLISTNODE current = task;
 
 	//traverse through the list to display all tasks
@@ -244,13 +246,13 @@ bool SearchForTask(PLISTNODE task) {
 
 			//task found, print the task
 			PrintTask(current->tasks);
-			return;
+			return true;
 		}
 		current = current->next;
 	}
 	//task not found
 	printf("Task with Id %d not found.\n", taskIdToSearch);
-
+	return false;
 }
 
 
@@ -274,26 +276,30 @@ bool SaveTask(PLISTNODE task, const char* filename) {
 	return true;
 }
 
-bool LoadTask(PLISTNODE* task, const char* filename) {
+void LoadTask(PLISTNODE* tasklist, const char* filename) {
 	//open the file for reading
- 	FILE* fp = fopen(filename, "r");
-	if (fp == NULL) {
- 		fprintf(stderr, "unable to open file for reading: %s\n", filename);
-		return false;
+  	FILE* fp = fopen(filename, "r");
+	if (fp != NULL) {
 
+		char line[MAXSIZE];
+		int task_id=0;   //the task id, which is the id used to save in disk, is used in deleting tasks
+		while (fgets(line, sizeof(line),fp)!=NULL) {
+			if (strncmp(line, "TASK:", strlen("TASK:")) == 0) {
+				TASK loadedTask = { .id = task_id };
+
+			 	sscanf_s(line, "TASK:%s %[^\n] %d", loadedTask.person, MAXNAME, loadedTask.description, MAXSIZE, &loadedTask.id);
+
+				AddTask(tasklist, loadedTask);
+				
+			}
+			task_id++;
+		}
+		printf("File loaded successfully\n");
+
+		fclose(fp);
+	}
+	else {
+		printf("there are no saved tasks\n");
 	}
 
-	//checks if it is not the end of the file
-	while (!feof(fp)) {
-		TASK loadedTask = LoadTaskFromDisk(fp);
-
-		//read task data from file
-		fread(&loadedTask, sizeof(TASK), 1, fp);
-		AddTask(task, loadedTask);
-
-
-	}
-
-	fclose(fp);
-	return true;
 }

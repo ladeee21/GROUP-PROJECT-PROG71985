@@ -14,6 +14,7 @@
 #include <string.h>
 
 
+
 TASK CreateTask(char* person, char* description, int id) {
 	TASK t;
 
@@ -28,7 +29,7 @@ TASK CreateTask(char* person, char* description, int id) {
 }
 
 void PrintTask(TASK t) {
-	printf("TASK %d: %s,%s\n", t.id,t.person,t.description);
+	printf("TASK: %s %s %d\n",t.person,t.description,t.id);
 }
 
 bool CompareTasks(TASK lhs, TASK rhs) {
@@ -39,8 +40,8 @@ bool CompareTasks(TASK lhs, TASK rhs) {
 void SaveTaskToDisk(TASK t, FILE* fp) {
 
 	fprintf(fp, "TASK:");
-	fprintf(fp, "%s\n", t.person);
-	fprintf(fp, "%s\n", t.description);
+	fprintf(fp, "%s ", t.person);
+	fprintf(fp, "%s ", t.description);
 	fprintf(fp, "%d\n", t.id);
 }
 

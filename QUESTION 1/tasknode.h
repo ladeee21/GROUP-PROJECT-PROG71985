@@ -17,7 +17,7 @@ typedef struct tasknode {
 //Devaughn C 
 //Group Project To-do list
 
-bool Initializetasks();
+void Initializetasks(PLISTNODE* tasklist);
 
 void AddTask(PLISTNODE* task, TASK t);
 
@@ -38,7 +38,7 @@ bool SearchForTask(PLISTNODE task);
 
 bool SaveTask(PLISTNODE task, const char* filename);
 
-bool LoadTask(PLISTNODE* task, const char* filename);
+void LoadTask(PLISTNODE* tasklist, const char* filename);
 
 void AddTaskToList(PLISTNODE* tasklist);
 

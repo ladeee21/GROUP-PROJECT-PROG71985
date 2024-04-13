@@ -15,15 +15,10 @@ int main(void) {
 	//initializes the node
 	PLISTNODE tasknode = NULL;
 	int option;
-
+	
 	
 
-	//loads task from tisk
- 	bool loadSuccess =  LoadTask(&tasknode, "task.dat.txt");
- 	if (!loadSuccess) {
-		printf("failure in loading tasks from file\n");
-		return 1;
-	}
+	Initializetasks(&tasknode);
 
 
 	do {
